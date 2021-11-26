@@ -50,6 +50,7 @@ Since the p-value for this estimate is less than (0.001), we can be more than (9
 Did the cost of parking change more for some types of businesses than for others?
 How confident are you about those differences?
 
+To interpret the regression in a meaningful way, I will first find the most common store type so I can compare other types to it.
 ```{r}
 Main_st_data %>%
   group_by(type) %>%
@@ -57,4 +58,20 @@ Main_st_data %>%
   mutate(percent = round(100*number / sum(number))) %>%
   arrange(desc(number))
 ```
+
+(Clothing) stores are the most common so I will compare everything back to clothing and relevel the regression back to it
+
+```{r}
+Main_st_data <- Main_st_data %>%
+  mutate(type = as.factor(type)) %>%
+  mutate(type = relevel(type, "Clothing"))
+```
+
+I will now do the bivariate regression to see which store types have changes in parking costs comparing to the changes in clothing stores.
+
+```{r}
+parking_cost_by_type <- lm(parking_cost_by_type ~ type, data= Main_st_data)
+summary(parking_cost_by_type)
+```
+
 

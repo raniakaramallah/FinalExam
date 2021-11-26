@@ -7,22 +7,54 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Load libraries
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r load libraries, message=FALSE}
+library(tidyverse)
+library(tidycensus)
+library(readxl)
+library(knitr)
+library(tigris)
+library(sf)
+library(gridExtra)
+library(interactions)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Load Data
+```{r, message=FALSE}
+Main_st_data <- read_csv("finalexam_sampledata.csv")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Question 1
+
+What is the average change in sales for Main street businesses? 
+Did sales increase of decrease on average? 
+How confident are you about that?
+
+```{r}
+t.test(Main_st_data$pct_sales_chng)
+```
+
+Mean of x
+On average, Main street businesses saw a (2.7%) (increase) in sales. 
+
+95 percent confidence interval:
+The 95-percent confidence interval for the (increase) is (2.4 to 3.1) percent. 
+
+p-value
+Since the p-value for this estimate is less than (0.001), we can be more than (99.9-percent) confident that sales increased.
+
+
+## Question 2 
+
+Did the cost of parking change more for some types of businesses than for others?
+How confident are you about those differences?
+
+```{r}
+Main_st_data %>%
+  group_by(type) %>%
+  summarise(number = n()) %>%
+  mutate(percent = round(100*number / sum(number))) %>%
+  arrange(desc(number))
+```
+

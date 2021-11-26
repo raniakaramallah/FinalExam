@@ -1,5 +1,5 @@
 ---
-title: "Final Exam_Rania"
+title: "Final Exam_Rania Karamallah"
 output: html_document
 ---
 
@@ -90,4 +90,33 @@ Parking costs at gas stations increased by about (10) percentage points (less) t
 Not counting any kind of effect of the changes to parking and cycling have had, what kind of 
 effect did it have on businesses if the closest transit stop got closer or further away? 
 
+I will run a regression model that will predict the effect on the chance in distance to transit on the percent change in sales. I will control for change in parking supply + changes in parking price + changes in bike traffic. 
 
+```{r}
+model_1 <- lm(pct_sales_chng ~ transit_dist + parking_cost_change + lost_parking + bike_chng, data = Main_st_data)
+
+
+summary(model_1)
+```
+
+
+For every one-mile increase in the distance from a transit stop, sales (decrease) by (17-percentage) points, controlling for difference in the changes to parking costs, parking supply and bike volumes. That is also statistically significant.
+
+
+## Question 4
+
+Was the effect of transit on sales different for some types of businesses than for others? What 
+was the difference, if any? 
+
+I will estimate a regression model with an interaction between transit distance and business type. For cosistence with the previous model, I will keep the controls of parking and cycling. I am hypothesizing that distance from a transit stop gas an effect on different types of store when considering how much thier sales have changed. 
+
+```{r}
+model_2 <- lm(pct_sales_chng ~ type + transit_dist + parking_cost_change + lost_parking + bike_chng, data = Main_st_data)
+
+
+summary(model_2)
+```
+
+
+
+For gas stations, furniture stores, and grocery stores, the distance to transit did not have a significant effect on the change in sales. For clothing stores, bookstores, drugstores, and restaurants, each additional mile closer to transit was associated with an additional (30-percentage increase) in sales. 

@@ -111,7 +111,8 @@ was the difference, if any?
 I will estimate a regression model with an interaction between transit distance and business type. For cosistence with the previous model, I will keep the controls of parking and cycling. I am hypothesizing that distance from a transit stop gas an effect on different types of store when considering how much thier sales have changed. 
 
 ```{r}
-model_2 <- lm(pct_sales_chng ~ type + transit_dist + parking_cost_change + lost_parking + bike_chng, data = Main_st_data)
+model_2 <- lm(pct_sales_chng ~ type + transit_dist + parking_cost_change +lost_parking + bike_chng + 
+                type:transit_dist, data = Main_st_data)
 
 
 summary(model_2)
@@ -119,4 +120,10 @@ summary(model_2)
 
 
 
-For gas stations, furniture stores, and grocery stores, the distance to transit did not have a significant effect on the change in sales. For clothing stores, bookstores, drugstores, and restaurants, each additional mile closer to transit was associated with an additional (30-percentage increase) in sales. 
+For gas stations, furniture stores, and grocery stores, the distance to transit did not have a substantial effect on the change in sales. For clothing stores, bookstores, drugstores, and restaurants, each additional mile closer to transit was associated with an additional (30-percentage increase) in sales or in other words, one mile each one mile further the store is from transit it loses aprx 30-percentage of it sales.
+
+to visualize: 
+```{r}
+interact_plot(model_2, pred = transit_dist, interval = TRUE, modx = type)
+```
+

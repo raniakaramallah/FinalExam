@@ -18,6 +18,7 @@ library(tigris)
 library(sf)
 library(gridExtra)
 library(interactions)
+library(ggplot2)
 ```
 
 ## Load Data
@@ -71,6 +72,8 @@ I will now do a bivariate regression to see which store types have changes in pa
 
 ```{r}
 parking_cost_by_type <- lm(parking_cost_by_type ~ type, data= Main_st_data)
+
+
 summary(parking_cost_by_type)
 ```
 

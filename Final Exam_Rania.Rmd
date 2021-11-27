@@ -51,7 +51,7 @@ Since the p-value for this estimate is less than (0.001), I can be more than (99
 Did the cost of parking change more for some types of businesses than for others?
 How confident are you about those differences?
 
-To interpret the regression, I will first find the most common store type so I can compare other types to it.
+I will do a bivariate regression to asnwer this questions. To interpret the regression, I will first find the most common store type so I can compare other types to it.
 ```{r}
 Main_st_data %>%
   group_by(type) %>%
@@ -68,7 +68,7 @@ Main_st_data <- Main_st_data %>%
   mutate(type = relevel(type, "Clothing"))
 ```
 
-I will now do a bivariate regression to see which store types have changes in parking costs comparing to the changes of parking cost in clothing stores.
+I will now do the bivariate regression to see which store types have changes in parking costs comparing to the changes of parking cost to clothing stores.
 
 ```{r}
 parking_cost_by_type <- lm(parking_cost_by_type ~ type, data= Main_st_data)
@@ -82,10 +82,10 @@ On average, (bookstores) has slightly increased and (drugstores) had slightly de
 
 I am at least 95-percent confident that all of the other types had significantly different changes in parking costs than the clothing stores did. 
 
-Parking costs at restaurants increased by about (4) percentage points (more) than at clothing stores. Meaning that parking costs for restaurants increased by 15%.
-Parking costs at furniture stores increased by about (7) percentage points (more) than at clothing stores. Meaning that parking costs for furniture stores increased by 18%.
-Parking costs at grocery stores increased by about (5) percentage points (less) than at clothing stores.Meaning that parking costs for grocery stores increased by 6%.
-Parking costs at gas stations increased by about (10) percentage points (less) than at clothing stores. Meaning that parking costs for gas stations increased by 1%. 
+Parking costs at restaurants increased by about (4) percentage points (more) than at clothing stores. 
+Parking costs at furniture stores increased by about (7) percentage points (more) than at clothing stores. 
+Parking costs at grocery stores increased by about (5) percentage points (less) than at clothing stores.
+Parking costs at gas stations increased by about (10) percentage points (less) than at clothing stores. 
 
 
 ## Question 3 
@@ -103,7 +103,7 @@ summary(model_1)
 ```
 
 
-For every one-mile increase in the distance from a transit stop, sales (decrease) by (17-percentage) points, controlling for difference in the changes to parking costs, parking supply and bike volumes. That is also statistically significant.
+For every one-mile increase in the distance from a transit stop, sales (decrease) by (17-percentage) points, controlling for difference in the changes to parking supply, parking costs, and bike volumes. That is also statistically significant.
 
 
 ## Question 4
@@ -111,7 +111,7 @@ For every one-mile increase in the distance from a transit stop, sales (decrease
 Was the effect of transit on sales different for some types of businesses than for others? 
 What was the difference, if any? 
 
-I will estimate a regression model with an interaction between transit distance and business type. For cosistence with the previous model, I will keep the controls of parking and cycling. I am hypothesizing that distance from a transit stop gas an effect on different types of store when considering how much their sales have changed. 
+I will estimate a regression model with an interaction between transit distance and business type. For consistency with the previous model, I will keep the controls of parking and cycling. I am hypothesizing that distance from a transit stop has an effect on different types of store when considering how much their sales have changed. 
 
 ```{r}
 model_2 <- lm(pct_sales_chng ~ type + transit_dist + parking_cost_change +lost_parking + bike_chng + 
@@ -126,7 +126,9 @@ Plot:
 interact_plot(model_2, pred = transit_dist, interval = TRUE, modx = type)
 ```
 
-For gas stations, furniture stores, and grocery stores, the distance to transit did not have a substantial effect on the change in sales. For clothing stores, bookstores, drugstores, and restaurants, each additional mile closer to transit was associated with an additional (30-percentage increase) in sales or in other words, one mile each one mile further the store is from transit it loses aprx 30-percentage of it sales.
+For gas stations, furniture stores, and grocery stores, the distance to transit did not have a substantial effect on the change in sales. 
+
+For clothing stores, bookstores, drugstores, and restaurants, each additional mile closer to transit was associated with an additional (30-percentage increase) in sales.
 
 
 
